@@ -27,11 +27,17 @@
  #include "git_ver.h"
  
  #include <signal.h>
- 
+
+ #include <pthread.h>             // <--- qo‘shing (Threads)
+#include "dsd_ncurses_api.h"  // sizning yangi API modulingiz
+
+
  #ifdef USE_RTLSDR
  #include <rtl-sdr.h>
  #endif
  
+
+
  volatile uint8_t exitflag; //fix for issue #136
  
  void handler(int sgnl)
@@ -1815,9 +1821,27 @@
    return atof(s);
  }
  
+ /* Thread orqali apini alohida potokka olish */
+void *api_server_thread(void *arg)
+{
+    start_api_server();  // API HTTP serverni ishga tushuradi
+    pthread_exit(NULL);
+}
+
+
  int
  main (int argc, char **argv)
  {
+
+
+    /*********************************************************************************************************/
+
+    pthread_t api_thread;
+    pthread_create(&api_thread, NULL, api_server_thread, NULL);  // <-- API serverni fon rejimda ishga tushirish
+
+    /*********************************************************************************************************/
+
+
    int c;
    //optarg and optind already defined when using Cygwin, no need to do so again
    #ifdef __CYGWIN__

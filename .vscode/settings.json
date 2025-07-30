@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "dsd_ncurses_api.h": "c",
+        "rtl-sdr.h": "c"
+    }
+}

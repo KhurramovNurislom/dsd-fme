@@ -7,7 +7,7 @@
 *-----------------------------------------------------------------------------*/
 
 #include "dsd.h"
-
+#include "dsd_ncurses_api.h"
 #ifdef USE_RTLSDR
 #include <rtl-sdr.h>
 //use to list out all detected RTL dongles
@@ -63,7 +63,7 @@ char *choices[] = {
   "Decode DMR",
   "Decode YSF",
   "Toggle Signal Inversion",
-  "Key Entry",
+  "Key Entry11111",
   "Reset Event History",
   "Toggle Payloads to Console",
   "Manually Set p2 Parameters", //16
@@ -181,8 +181,18 @@ void ncursesMenu (dsd_opts * opts, dsd_state * state)
 	mvprintw(0, 0, "  Use arrow keys to go up and down, Press ENTER to select a choice.");
 	refresh();
 	print_menu(menu_win, highlight);
+
+
+
   while(1)
 	{	c = wgetch(menu_win);
+
+
+ // har safar ekranni yangilaganda API qiymatini ko‘rsat
+    mvwprintw(menu_win, HEIGHT - 3, 2, "API son: %d", api_received_number);
+    wrefresh(menu_win);
+
+
 		switch(c)
 		{	case KEY_UP:
 				if(highlight == 1)
@@ -272,6 +282,7 @@ void ncursesMenu (dsd_opts * opts, dsd_state * state)
     				break;
     		}
         print_menuc(test_win, highlightc);
+        
         // if (choicec == 2) //Legacy Decode to single wav file is disabled
         // {
         //   char * timestr = getTime();
@@ -289,6 +300,11 @@ void ncursesMenu (dsd_opts * opts, dsd_state * state)
         //   }
         //   openWavOutFile (opts, state);
         // }
+
+
+
+
+        /* 3 tanlandi */
         if (choicec == 3)
         {
           //read in filename for symbol capture bin
@@ -303,6 +319,13 @@ void ncursesMenu (dsd_opts * opts, dsd_state * state)
 
           openSymbolOutFile (opts, state);
         }
+
+
+
+
+
+
+        /* 4 tanlandi */
         if (choicec == 4)
         {
           //toggle all mutes
@@ -811,6 +834,9 @@ void ncursesMenu (dsd_opts * opts, dsd_state * state)
       refresh();
     }
 
+
+
+
     //Key Entry
     if (choice == 14)
     {
@@ -903,6 +929,8 @@ void ncursesMenu (dsd_opts * opts, dsd_state * state)
 
         state->keyloader = 0; //turn off keyloader
       }
+
+
       if (option == 3)
       {
         state->R = 0;
@@ -918,6 +946,9 @@ void ncursesMenu (dsd_opts * opts, dsd_state * state)
 
         state->keyloader = 0; //turn off keyloader
       }
+
+
+
       //toggle enforcement of basic privacy key over enc bit set on traffic
       if (option == 4)
       {
